@@ -43,6 +43,11 @@ router.get("/", (req, res) => {
         (restaurant) => restaurant.id === starredRestaurant.restaurantId
       );
 
+      if (!restaurant){
+        res.status(404).json({error: "Restaurant not found"});
+        return;
+      }
+
       return {
         id: starredRestaurant.id,
         comment: starredRestaurant.comment,
@@ -119,10 +124,12 @@ router.post("/", (req, res) => {
  */
 router.delete("/:id", (req, res) => {
   const { id} = req.params;
+  console.log(`id: ${id}`);
 
   const index = STARRED_RESTAURANTS.findIndex(
     (restaurant) => restaurant.id === id
   );
+  console.log(`index: ${index}`);
   if (index !== -1){
     STARRED_RESTAURANTS.splice(index, 1);
     res.json({message : "Starred restaurant deleted"});
